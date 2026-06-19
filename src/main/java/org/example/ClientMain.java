@@ -1,3 +1,5 @@
+package org.example;
+
 import server.SocketClient;
 
 public class ClientMain {

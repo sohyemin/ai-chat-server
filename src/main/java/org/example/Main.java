@@ -1,3 +1,5 @@
+package org.example;
+
 import server.SocketServer;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or

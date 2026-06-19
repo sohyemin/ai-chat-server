@@ -3,12 +3,10 @@ package server;
 import engine.AIEngine;
 import factory.AIEngineFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class SocketServer {
 
@@ -16,7 +14,7 @@ public class SocketServer {
 
     public void start() throws IOException {
 
-        AIEngine engine = AIEngineFactory.create("openAi");
+        AIEngine engine = AIEngineFactory.create("openai");
 //        AIEngine engine = AIEngineFactory.create("ollama");
 
         ServerSocket serverSocket = new ServerSocket(8080);
@@ -26,11 +24,17 @@ public class SocketServer {
         System.out.println("클라이언트 연결!");
 
         BufferedReader reader = new BufferedReader(
-          new InputStreamReader(socket.getInputStream())
+          new InputStreamReader(
+                  socket.getInputStream(),
+                  StandardCharsets.UTF_8
+          )
         );
 
         PrintWriter writer = new PrintWriter(
-                socket.getOutputStream(),
+                new OutputStreamWriter(
+                        socket.getOutputStream(),
+                        StandardCharsets.UTF_8
+                ),
                 true
         );
 
@@ -45,7 +49,7 @@ public class SocketServer {
 
             if(message.equals("/openai")){
                 engine =
-                        AIEngineFactory.create("openAi");
+                        AIEngineFactory.create("openai");
                 writer.println("OpenAI로 변경되었습니다.");
                 writer.println(END_SIGNAL);
                 continue;
